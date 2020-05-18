@@ -12,7 +12,7 @@ def random_string(maxlen):
 def test_create_project(app):
     project = Project(name=random_string(20), description=random_string(20))
     app.session.login("administrator", "root")
-    old_projects = app.project.get_projects_list()
+    old_projects = app.soap.get_projects_list("administrator", "root")
 
     for p in old_projects:
         if p.name == project.name:
@@ -20,6 +20,6 @@ def test_create_project(app):
                               description=random_string(20))
 
     app.project.create(project)
-    new_projects = app.project.get_projects_list()
+    new_projects = app.soap.get_projects_list("administrator", "root")
     assert len(old_projects) == len(new_projects) - 1
     assert project in new_projects
